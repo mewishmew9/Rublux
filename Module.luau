@@ -1349,6 +1349,72 @@ return {
 			end)
 		end,
 
+		StartMODEL = function(AnimModel: Model)
+			if not FakeRig then return end
+
+			StopAnimationThread()
+			
+			local Animate = FindFirstChild(FakeRig, "Animate")
+
+			if Animate then
+				Animate.Disabled = true
+			end
+	
+			if FakeAnimator then
+				for _, Track in GetPlayingAnimationTracks(FakeAnimator) do
+					Track:Stop()
+				end
+			end
+			
+			if not AnimModel then
+				warn("Failed to load animation.")
+				return
+			end
+
+			CurrentAnimation = AnimationModel
+			CurrentAnimation.Name = "Animation"
+			CurrentAnimation.Parent = FakeRig
+
+			for _, Frame in GetChildren(CurrentAnimation) do
+				table.insert(FrameTimes, Frame.Time)
+				FrameData[Frame.Time] = {}
+
+				for _, Part in Frame:GetDescendants() do
+					table.insert(FrameData[Frame.Time], Part)
+				end
+			end
+
+			AnimationThread = task.spawn(function()
+				while true do
+					for i, Time in FrameTimes do
+						if not IsDescendantOf(FakeRig, Workspace) then
+							table.clear(FrameTimes)
+							table.clear(FrameData)
+
+							break
+						end
+
+						local FrameParts = FrameData[Time]
+
+						for _, KeyFramePart in FrameParts do
+							local Joint = Joints[KeyFramePart.Name]
+							if Joint then
+								Joint.Transform = KeyFramePart.CFrame
+							end
+						end
+
+						local Next = FrameTimes[i + 1]
+						if Next then
+							local Delay = Next - Time
+							task.wait(Delay / 1.75)
+						end
+					end
+
+					task.wait()
+				end
+			end)
+		end,
+
 		Stop = StopAnimationThread
 	},
 
