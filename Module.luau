@@ -1371,7 +1371,7 @@ return {
 				return
 			end
 
-			CurrentAnimation = AnimModel
+			CurrentAnimation = AnimModel -- uses model instead
 			CurrentAnimation.Name = "Animation"
 			CurrentAnimation.Parent = FakeRig
 
