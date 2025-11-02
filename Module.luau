@@ -1114,12 +1114,7 @@ local function StartReanimate()
 	ApplyCharacter()
 end
 
-if not DontStartYet then
-	print("started1")
-	StartReanimate()
-end 
-
-return {
+local replications = {
 	GetCharacter = function() -- Returns FakeRig Model, needed for scripts.
 		return FakeRig
 	end,
@@ -1424,3 +1419,11 @@ return {
 	StopReanimate = CancelScript,
 	Version = "1.8-Beta",
 }
+
+if not DontStartYet then
+	_G.REPLLLS = replications;
+	StartReanimate()
+end
+print("Finished");
+
+return replications;
