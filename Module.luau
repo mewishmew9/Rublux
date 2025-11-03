@@ -1,6 +1,6 @@
 -- \\ Krypton Reanimate, Author: @xyzkade/@gelatekforever. https://github.com/KadeTheExploiter/Krypton/ //
 -- || 1.8, Let's experiment!
--- // Eyelashes, Lipstick, Facemask, Crystal Gel, Deluxe Spa Package!~...
+-- // idk why there was a queer comment here but ok
 
 local game = game
 local TableClear = table.clear
