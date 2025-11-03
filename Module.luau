@@ -136,7 +136,7 @@ Destroy(QuickHumanoid)
 
 -- // Instances
 
-local function SetDescendantProperties(Table: {}, Class: string, Property: string, Value: any, Check: boolean)
+local function SetDescendantProperties(Table: {}, Class: string, Property: string, Value: any, Check: boolean, Class2: string)
 	if not Check then
 		return
 	end
@@ -144,6 +144,14 @@ local function SetDescendantProperties(Table: {}, Class: string, Property: strin
 	for _, Any in Table do
 		if IsA(Any, Class) then
 			Any[Property] = Value
+		end
+	end
+
+	if Class2 then
+		for _, Any in Table do
+			if IsA(Any, Class2) then
+				Any[Property] = Value
+			end
 		end
 	end
 end
@@ -508,7 +516,7 @@ end
 
 local function RefitRig()
 	TotalHats = 0
-	SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", 0.5, true)
+	SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", 0.5, true,"Decal")
 	SetDescendantProperties(FakeRigChildren, "BasePart", "BrickColor", BrickColor.new("Forest green"), true)
 	ReplicateSignal(Player, "ConnectDiedSignalBackend")
 end
@@ -787,7 +795,7 @@ local function OnCharacterAdded(NewCharacter: Model)
 
 	FakeRigChildren = GetChildren(FakeRig)
 
-	SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", OverlayFakeCharacter and 0.5 or 1, true)
+	SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", OverlayFakeCharacter and 0.5 or 1, true,"Decal")
 	SetDescendantProperties(FakeRigChildren, "BasePart", "BrickColor", BrickColor.new("Black"), true)
 end
 
@@ -1101,14 +1109,14 @@ local function StartReanimate()
 	end
 
 	if PermanentDeath then
-		SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", 0.5, true)
+		SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", 0.5, true,"Decal")
 		ReplicateSignal(Player, "ConnectDiedSignalBackend")
 		TaskWait(Players.RespawnTime + 0.15)
 	end
 
 	BringCharacter()
-	SetDescendantProperties(FakeRigChildren, "Decal", "Transparency", OverlayFakeCharacter and 0.5 or 1, true)
-	SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", OverlayFakeCharacter and 0.5 or 1, true)
+	SetDescendantProperties(FakeRigChildren, "Decal", "Transparency", OverlayFakeCharacter and 0.5 or 1, true,"Decal")
+	SetDescendantProperties(FakeRigChildren, "BasePart", "Transparency", OverlayFakeCharacter and 0.5 or 1, true,"Decal")
 	SetHumanoidStates()
 	FinalizeAccoutrements()
 	ApplyCharacter()
